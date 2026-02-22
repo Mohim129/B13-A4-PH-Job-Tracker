@@ -17,31 +17,35 @@ const filterDiv = document.getElementById("interview-jobs-cards");
 function calculateCount() {
   totalCount.innerText = Number(allJobs.children.length);
   totalCount2.innerText = Number(allJobs.children.length);
-  //   interviewCount.innerText = Number(interviewJobs.children.length);
-  //   rejectCount.innerText = Number(rejectedJobs.children.length);
-
   interviewCount.innerText = interviewList.length;
+  console.log(interviewList.length);
+  console.log(interviewCount.innerText);
   rejectCount.innerText = rejectList.length;
 }
 calculateCount();
 
 mainContainer.addEventListener("click", function (event) {
     // console.log(event.target.parentNode.parentNode);
-    console.log(event.target.classList.contains("interview-btn"));
+    // console.log(event.target.classList.contains("interview-btn"));
   if (event.target.classList.contains("interview-btn")) {
     const jobCard = event.target.parentNode.parentNode;
     const companyName = jobCard.querySelector(".company-name").innerText;
     const jobTitle = jobCard.querySelector(".job-position").innerText;
     const salaryInfo = jobCard.querySelector(".salary-info").innerText;
     const jobDescription = jobCard.querySelector(".notes").innerText;
-    const jobStatus = jobCard.querySelector(".status-badge").innerText;
 
+    function statusChange() {
+    jobCard.querySelector(".status-badge").classList.add("hidden");
+    jobCard.querySelector(".interview-badge").classList.remove("hidden");
+    const jobStatus = "Interview";
+    return jobStatus;
+    }
     const jobInfo = {
       companyName,
       jobTitle,
       salaryInfo,
       jobDescription,
-      jobStatus,
+      jobStatus: statusChange()
     };
     // console.log(jobInfo);
 
@@ -49,14 +53,15 @@ mainContainer.addEventListener("click", function (event) {
       (item) => item.companyName == jobInfo.companyName,
     );
 
-    jobCard.querySelector(".status-badge").classList.add('hidden');
-    jobCard.querySelector(".interview-badge").classList.remove('hidden');
+    // jobCard.querySelector(".status-badge").classList.add('hidden');
+    // jobCard.querySelector(".interview-badge").classList.remove('hidden');
     
     if (!existingInterview) {
       interviewList.push(jobInfo);
     //   console.log(interviewList);
       addInterviewJob();
     }
+    calculateCount();
   }
 
 });
@@ -69,30 +74,30 @@ function addInterviewJob() {
     div.innerHTML = `
             <div class="card-body">
               <div class="flex justify-between items-center">
-                <h2 class="company-name text-info-content text-xl">Mobile First Corp</h2>
+                <h2 class="company-name text-info-content text-xl">${interview.companyName}</h2>
                 <i
                   id="delete"
                   onclick=""
                   class="fa-regular fa-trash-can text-gray-400 cursor-pointer"
                 ></i>
               </div>
-              <h4 class="job-position text-[#64748b] mb-4">React Native Developer</h4>
+              <h4 class="job-position text-[#64748b] mb-4">${interview.jobTitle}</h4>
               <h4 class=" salary-info text-[#64748b] text-xs">
-                Remote • Full-time • $130,000 - $175,000
+                ${interview.salaryInfo}
               </h4>
 
               <!-- badge  -->
               <div id="badges" class="card-actions flex">
                 <button
                   id="not-applied-badge"
-                  class="status-badge btn bg-info-content/10 text-info-content"
+                  class="status-badge btn bg-info-content/10 text-info-content hidden"
                   disabled
                 >
                   Not Applied
                 </button>
                 <button
                   id="interview-badge"
-                  class="interview-badge btn bg-success text-white hidden"
+                  class="interview-badge btn bg-success text-white"
                   disabled
                 >
                   Interview
@@ -108,8 +113,7 @@ function addInterviewJob() {
 
 
               <p class="notes text-info-content">
-                Build cross-platform mobile applications using React Native.
-                Work on products used by millions of users worldwide.
+                ${interview.jobDescription}
               </p>
               <!-- buttons  -->
               <div class="interview-btn card-actions flex">
@@ -130,7 +134,7 @@ function addInterviewJob() {
             </div>
         `;
 
-    console.log(div.innerHTML);
+    // console.log(div.innerHTML);
     filterDiv.appendChild(div);
   }
 }
