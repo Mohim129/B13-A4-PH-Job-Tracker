@@ -128,6 +128,8 @@
               <h4 class="text-[#64748b] text-xs">
                 Remote • Full-time • $130,000 - $175,000
               </h4>
+
+              <!-- badge  -->
               <div id="badges" class="card-actions flex">
                 <button
                   id="not-applied-badge"
@@ -151,19 +153,22 @@
                   Reject
                 </button>
               </div>
+
+
               <p class="text-info-content">
                 Build cross-platform mobile applications using React Native.
                 Work on products used by millions of users worldwide.
               </p>
+              <!-- buttons  -->
               <div class="card-actions flex">
-                <button
+                <button onclick="setInterview('interview-badge')"
                   id="interview-btn"
                   class="btn border-success text-success"
                 >
                   Interview
                 </button>
                 <button
-                  onclick=""
+                  onclick="setInterview('reject-badge')"
                   id="reject-btn"
                   class="btn border-error text-error"
                 >
@@ -578,7 +583,7 @@
     </main>
 
     <script src="./scripts/count.js"></script>
-    <script src="./scripts/interview.js"></script>
+    <script src="./scripts/badges.js"></script>
     <script src="./scripts/reject.js"></script>
     <script src="./scripts/toggle.js"></script>
   </body>
