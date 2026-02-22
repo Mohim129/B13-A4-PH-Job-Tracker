@@ -89,14 +89,32 @@
       <!-- ----------------------------------------------- -->
       <section id="all-jobs-section" class="space-y-5">
         <div class="grid md:flex gap-3">
-          <button onclick="toggleStyle('all-filter-button')"  id="all-filter-button" class="btn btn-primary px-8">All</button>
-          <button onclick="toggleStyle('interview-filter-button')" id="interview-filter-button" class="btn">Interview</button>
-          <button onclick="toggleStyle('rejected-filter-button')" id="rejected-filter-button" class="btn">Reject</button>
+          <button
+            onclick="toggleStyle('all-filter-button','all-jobs-cards')"
+            id="all-filter-button"
+            class="btn btn-primary px-8"
+          >
+            All
+          </button>
+          <button
+            onclick="toggleStyle('interview-filter-button','interview-jobs-cards')"
+            id="interview-filter-button"
+            class="btn"
+          >
+            Interview
+          </button>
+          <button
+            onclick="toggleStyle('rejected-filter-button','rejected-jobs-cards')"
+            id="rejected-filter-button"
+            class="btn"
+          >
+            Reject
+          </button>
         </div>
         <!--all jobs div -->
         <!-- ----------------------------------------------- -->
         <div id="all-jobs-cards">
-          <div id="job-card" class="card bg-white w-full shadow-sm">
+          <div id="job-card-1" class="card bg-white w-full shadow-sm">
             <div class="card-body">
               <div class="flex justify-between items-center">
                 <h2 class="text-info-content text-xl">Mobile First Corp</h2>
@@ -144,7 +162,11 @@
                 >
                   Interview
                 </button>
-                <button id="reject-btn" class="btn border-error text-error">
+                <button
+                  onclick=""
+                  id="reject-btn"
+                  class="btn border-error text-error"
+                >
                   Reject
                 </button>
               </div>
@@ -533,57 +555,19 @@
             </div>
           </div>
         </div>
-      </section>
-
-      <!--interview jobs -->
-      <!-- ----------------------------------------------- -->
-      <section id="interview-jobs-section" class="hidden space-y-5">
-        <div class="grid md:flex gap-3">
-          <button class="btn px-8">All</button>
-          <button class="btn btn-primary">Interview</button>
-          <button class="btn">Reject</button>
-        </div>
         <!--interview jobs div -->
         <!-- ----------------------------------------------- -->
-       <div id="interview-jobs-cards">
+        <div id="interview-jobs-cards"></div>
 
-       </div>
-
-      </section>
-
-      <!--rejected jobs-->
-      <!-- ----------------------------------------------- -->
-      <section id="reject-jobs-section" class="hidden space-y-5">
-        <div class="grid md:flex gap-3">
-          <button class="btn px-8">All</button>
-          <button class="btn">Interview</button>
-          <button class="btn btn-primary">Reject</button>
-        </div>
-        <!--all jobs div -->
+        <!--rejected jobs-->
         <!-- ----------------------------------------------- -->
-       <div id="rejected-jobs-cards">
+        <div id="rejected-jobs-cards">
 
-
-        <div></div>
-        <div></div>
-        <div></div>
-
-
-
-       </div>
-      </section>
-
-      <!--no jobs -->
-      <!-- ----------------------------------------------- -->
-      <section id="no-jobs-section" class="hidde space-y-5">
-        <div class="grid md:flex gap-3">
-          <button class="btn px-8">All</button>
-          <button class="btn">Interview</button>
-          <button class="btn">Reject</button>
         </div>
+
         <!--no jobs div -->
         <!-- ----------------------------------------------- -->
-        <div id="no-jobs" class="p-[111px] text-center">
+        <div id="no-jobs" class="hidden p-[111px] text-center">
           <img class="mx-auto" src="./assets/jobs.png" alt="" />
           <h2 class="text-info-content text-[1.5rem] font-semibold my-6">
             No jobs available
@@ -594,7 +578,8 @@
     </main>
 
     <script src="./scripts/count.js"></script>
-    <script src="./scripts/append.js"></script>
+    <script src="./scripts/interview.js"></script>
+    <script src="./scripts/reject.js"></script>
     <script src="./scripts/toggle.js"></script>
   </body>
 </html>
