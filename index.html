@@ -89,9 +89,9 @@
       <!-- ----------------------------------------------- -->
       <section id="all-jobs-section" class="space-y-5">
         <div class="grid md:flex gap-3">
-          <button class="btn btn-primary px-8">All</button>
-          <button class="btn">Interview</button>
-          <button class="btn">Reject</button>
+          <button onclick="toggleStyle('all-filter-button')"  id="all-filter-button" class="btn btn-primary px-8">All</button>
+          <button onclick="toggleStyle('interview-filter-button')" id="interview-filter-button" class="btn">Interview</button>
+          <button onclick="toggleStyle('rejected-filter-button')" id="rejected-filter-button" class="btn">Reject</button>
         </div>
         <!--all jobs div -->
         <!-- ----------------------------------------------- -->
@@ -569,7 +569,7 @@
         <div></div>
 
 
-        
+
        </div>
       </section>
 
@@ -594,6 +594,7 @@
     </main>
 
     <script src="./scripts/count.js"></script>
-    <script src=""></script>
+    <script src="./scripts/append.js"></script>
+    <script src="./scripts/toggle.js"></script>
   </body>
 </html>
