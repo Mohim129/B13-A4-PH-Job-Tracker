@@ -13,20 +13,18 @@ const rejectedJobs = document.getElementById("rejected-jobs-cards");
 
 const mainContainer = document.querySelector("main");
 const filterDiv = document.getElementById("interview-jobs-cards");
+const filterDiv2 = document.getElementById("rejected-jobs-cards");
 
 function calculateCount() {
   totalCount.innerText = Number(allJobs.children.length);
   totalCount2.innerText = Number(allJobs.children.length);
   interviewCount.innerText = interviewList.length;
-  console.log(interviewList.length);
-  console.log(interviewCount.innerText);
   rejectCount.innerText = rejectList.length;
 }
 calculateCount();
 
+
 mainContainer.addEventListener("click", function (event) {
-    // console.log(event.target.parentNode.parentNode);
-    // console.log(event.target.classList.contains("interview-btn"));
   if (event.target.classList.contains("interview-btn")) {
     const jobCard = event.target.parentNode.parentNode;
     const companyName = jobCard.querySelector(".company-name").innerText;
@@ -35,17 +33,42 @@ mainContainer.addEventListener("click", function (event) {
     const jobDescription = jobCard.querySelector(".notes").innerText;
 
     function statusChange() {
-    jobCard.querySelector(".status-badge").classList.add("hidden");
-    jobCard.querySelector(".interview-badge").classList.remove("hidden");
-    const jobStatus = "Interview";
-    return jobStatus;
+      let badge = jobCard.querySelector(".status-badge");
+      let currentText = badge.innerText;
+
+      if (currentText == "Not Applied" || currentText == "Rejected") {
+        // ---------
+        badge.classList.remove(
+          "bg-info-content/10",
+          "text-info-content",
+          "bg-error",
+          "text-white",
+        );
+        // badge.classList.remove("bg-error", "text-white");
+        badge.classList.add("bg-success", "text-white");
+        badge.innerText = "Interview";
+        return badge.innerText;
+      } else if (currentText == "Interview") {
+        badge.classList.remove(
+          "bg-success",
+          "text-white",
+          "bg-error",
+          "text-white",
+        );
+        badge.classList.add("bg-info-content/10", "text-info-content");
+        badge.innerText = "Not Applied";
+        return badge.innerText;
+      }
     }
+
+    const newStatus = statusChange();
+
     const jobInfo = {
       companyName,
       jobTitle,
       salaryInfo,
       jobDescription,
-      jobStatus: statusChange()
+      jobStatus: newStatus,
     };
     // console.log(jobInfo);
 
@@ -53,88 +76,199 @@ mainContainer.addEventListener("click", function (event) {
       (item) => item.companyName == jobInfo.companyName,
     );
 
-    // jobCard.querySelector(".status-badge").classList.add('hidden');
-    // jobCard.querySelector(".interview-badge").classList.remove('hidden');
-    
     if (!existingInterview) {
       interviewList.push(jobInfo);
-    //   console.log(interviewList);
-      addInterviewJob();
+      rejectList = rejectList.filter((item) => item.companyName != companyName);
+    } else if (newStatus == "Not Applied") {
+      interviewList = interviewList.filter(
+        (item) => item.companyName != companyName,
+      );
     }
+    // rejectList = rejectList.filter((item) => item.companyName != companyName);
     calculateCount();
-  }
+    addInterviewJob();
+    addRejectedJob();
+  } else if (event.target.classList.contains("reject-btn")) {
+    const jobCard = event.target.parentNode.parentNode;
+    const companyName = jobCard.querySelector(".company-name").innerText;
+    const jobTitle = jobCard.querySelector(".job-position").innerText;
+    const salaryInfo = jobCard.querySelector(".salary-info").innerText;
+    const jobDescription = jobCard.querySelector(".notes").innerText;
 
+    function statusChange() {
+      let badge = jobCard.querySelector(".status-badge");
+      let currentText = badge.innerText;
+
+      if (currentText == "Not Applied" || currentText == "Interview") {
+        // ---------
+        badge.classList.remove(
+          "bg-info-content/10",
+          "text-info-content",
+          "bg-success",
+          "text-white",
+        );
+        // badge.classList.remove();
+        badge.classList.add("bg-error", "text-white");
+
+        badge.innerText = "Rejected";
+
+        return badge.innerText;
+      } else if (currentText == "Rejected") {
+        badge.classList.remove(
+          "bg-error",
+          "text-white",
+          "bg-success",
+          "text-white",
+        );
+        badge.classList.add("bg-info-content/10", "text-info-content");
+        badge.innerText = "Not Applied";
+        return badge.innerText;
+      }
+    }
+    const newStatus = statusChange();
+    const jobInfo = {
+      companyName,
+      jobTitle,
+      salaryInfo,
+      jobDescription,
+      jobStatus: newStatus,
+    };
+
+    const existingRejects = rejectList.find(
+      (item) => item.companyName == jobInfo.companyName,
+    );
+
+    if (!existingRejects) {
+      rejectList.push(jobInfo);
+      interviewList = interviewList.filter(
+        (item) => item.companyName != companyName,
+      );
+    } else if (newStatus == "Not Applied") {
+      rejectList = rejectList.filter((item) => item.companyName != companyName);
+    }
+    interviewList = interviewList.filter(
+      (item) => item.companyName != companyName,
+    );
+    calculateCount();
+    addRejectedJob();
+    addInterviewJob();
+  }
 });
 
 function addInterviewJob() {
   filterDiv.innerHTML = "";
+
   for (let interview of interviewList) {
     let div = document.createElement("div");
     div.className = "card bg-white w-full shadow-sm";
+
+    let badgeClassInfo = "";
+    if (interview.jobStatus === "Interview") {
+      badgeClassInfo = "bg-success text-white";
+    } else if (interview.jobStatus === "Rejected") {
+      badgeClassInfo = "bg-error text-white";
+    } else {
+      badgeClassInfo = "bg-info-content/10 text-info-content";
+    }
+
     div.innerHTML = `
             <div class="card-body">
               <div class="flex justify-between items-center">
-                <h2 class="company-name text-info-content text-xl">${interview.companyName}</h2>
+                <h2 class="company-name text-info-content text-xl">
+                  ${interview.companyName}
+                </h2>
                 <i
-                  id="delete"
-                  onclick=""
                   class="fa-regular fa-trash-can text-gray-400 cursor-pointer"
                 ></i>
               </div>
-              <h4 class="job-position text-[#64748b] mb-4">${interview.jobTitle}</h4>
-              <h4 class=" salary-info text-[#64748b] text-xs">
+              <h4 class="job-position text-[#64748b] mb-4">
+                ${interview.jobTitle}
+              </h4>
+              <h4 class="salary-info text-[#64748b] text-xs">
                 ${interview.salaryInfo}
               </h4>
 
               <!-- badge  -->
-              <div id="badges" class="card-actions flex">
+              <div class="card-actions flex">
                 <button
-                  id="not-applied-badge"
-                  class="status-badge btn bg-info-content/10 text-info-content hidden"
+                  class="status-badge btn ${badgeClassInfo}"
                   disabled
-                >
-                  Not Applied
-                </button>
-                <button
-                  id="interview-badge"
-                  class="interview-badge btn bg-success text-white"
-                  disabled
-                >
-                  Interview
-                </button>
-                <button
-                  id="reject-badge"
-                  class="reject-badge btn bg-error text-white hidden"
-                  disabled
-                >
-                  Reject
-                </button>
+                >${interview.jobStatus}</button>
               </div>
-
 
               <p class="notes text-info-content">
                 ${interview.jobDescription}
               </p>
               <!-- buttons  -->
               <div class="interview-btn card-actions flex">
-                <button onclick="setInterview('interview-badge','job-card-1')"
-                  id="interview-btn"
-                  class="interview-btn btn border-success text-success"
-                >
+                <button class="interview-btn btn border-success text-success">
                   Interview
                 </button>
-                <button
-                  onclick="setInterview('reject-badge','job-card-1')"
-                  id="reject-btn"
-                  class="reject-btn btn border-error text-error"
-                >
+                <button class="reject-btn btn border-error text-error">
                   Reject
                 </button>
               </div>
-            </div>
+            </div> 
         `;
 
     // console.log(div.innerHTML);
     filterDiv.appendChild(div);
+  }
+}
+
+function addRejectedJob() {
+  filterDiv2.innerHTML = "";
+  for (let reject of rejectList) {
+    let div = document.createElement("div");
+    div.className = "card bg-white w-full shadow-sm";
+    let badgeClassInfo = "";
+    if (reject.jobStatus === "Interview") {
+      badgeClassInfo = "bg-success text-white";
+    } else if (reject.jobStatus === "Rejected") {
+      badgeClassInfo = "bg-error text-white";
+    } else {
+      badgeClassInfo = "bg-info-content/10 text-info-content";
+    }
+    div.innerHTML = `
+            <div class="card-body">
+              <div class="flex justify-between items-center">
+                <h2 class="company-name text-info-content text-xl">
+                  ${reject.companyName}
+                </h2>
+                <i
+                  class="fa-regular fa-trash-can text-gray-400 cursor-pointer"
+                ></i>
+              </div>
+              <h4 class="job-position text-[#64748b] mb-4">
+                ${reject.jobTitle}
+              </h4>
+              <h4 class="salary-info text-[#64748b] text-xs">
+                ${reject.salaryInfo}
+              </h4>
+
+              <!-- badge  -->
+              <div class="card-actions flex">
+                <button
+                  class="status-badge btn ${badgeClassInfo}"
+                  disabled
+                >${reject.jobStatus}
+                </button>
+              </div>
+
+              <p class="notes text-info-content">
+                ${reject.jobDescription}
+              </p>
+              <!-- buttons  -->
+              <div class="interview-btn card-actions flex">
+                <button class="interview-btn btn border-success text-success">
+                  Interview
+                </button>
+                <button class="reject-btn btn border-error text-error">
+                  Reject
+                </button>
+              </div>
+            </div> 
+        `;
+    filterDiv2.appendChild(div);
   }
 }
