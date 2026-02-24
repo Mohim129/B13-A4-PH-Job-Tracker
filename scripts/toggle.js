@@ -8,6 +8,8 @@ const allJobsDiv = document.getElementById("all-jobs-cards");
 const interviewJobsDiv = document.getElementById("interview-jobs-cards");
 const rejectedJobsDiv = document.getElementById("rejected-jobs-cards");
 
+
+
 function toggleStyle(id, parent) {
   allFilterButton.classList.remove("btn-primary");
   interviewFilterButton.classList.remove("btn-primary");
@@ -24,6 +26,7 @@ function toggleStyle(id, parent) {
   noJob.classList.add("hidden");
 
   const childCount = Number(parentHide.children.length);
+  document.getElementById("total-count-2").innerText = childCount;
 
   addTo.classList.add("btn-primary");
 
@@ -32,5 +35,5 @@ function toggleStyle(id, parent) {
   } else {
     parentHide.classList.remove("hidden");
   }
-  // parentHide.classList.remove('hidden')
+
 }

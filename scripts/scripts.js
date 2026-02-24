@@ -15,11 +15,20 @@ const mainContainer = document.querySelector("main");
 const filterDiv = document.getElementById("interview-jobs-cards");
 const filterDiv2 = document.getElementById("rejected-jobs-cards");
 
+
+
 function calculateCount() {
   totalCount.innerText = Number(allJobs.children.length);
-  totalCount2.innerText = Number(allJobs.children.length);
   interviewCount.innerText = interviewList.length;
   rejectCount.innerText = rejectList.length;
+
+  if (!allJobs.classList.contains("hidden")) {
+    totalCount2.innerText = Number(allJobs.children.length);
+  } else if (!interviewJobs.classList.contains("hidden")) {
+    totalCount2.innerText = interviewList.length;
+  } else if (!rejectedJobs.classList.contains("hidden")) {
+    totalCount2.innerText = rejectList.length;
+  }
 }
 calculateCount();
 
