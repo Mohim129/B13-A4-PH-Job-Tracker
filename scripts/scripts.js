@@ -23,7 +23,6 @@ function calculateCount() {
 }
 calculateCount();
 
-
 mainContainer.addEventListener("click", function (event) {
   if (event.target.classList.contains("interview-btn")) {
     const jobCard = event.target.parentNode.parentNode;
@@ -37,14 +36,14 @@ mainContainer.addEventListener("click", function (event) {
       let currentText = badge.innerText;
 
       if (currentText == "Not Applied" || currentText == "Rejected") {
-        // ---------
+
         badge.classList.remove(
           "bg-info-content/10",
           "text-info-content",
           "bg-error",
           "text-white",
         );
-        // badge.classList.remove("bg-error", "text-white");
+
         badge.classList.add("bg-success", "text-white");
         badge.innerText = "Interview";
         return badge.innerText;
@@ -70,7 +69,7 @@ mainContainer.addEventListener("click", function (event) {
       jobDescription,
       jobStatus: newStatus,
     };
-    // console.log(jobInfo);
+
 
     const existingInterview = interviewList.find(
       (item) => item.companyName == jobInfo.companyName,
@@ -84,7 +83,7 @@ mainContainer.addEventListener("click", function (event) {
         (item) => item.companyName != companyName,
       );
     }
-    // rejectList = rejectList.filter((item) => item.companyName != companyName);
+
     calculateCount();
     addInterviewJob();
     addRejectedJob();
@@ -100,14 +99,14 @@ mainContainer.addEventListener("click", function (event) {
       let currentText = badge.innerText;
 
       if (currentText == "Not Applied" || currentText == "Interview") {
-        // ---------
+
         badge.classList.remove(
           "bg-info-content/10",
           "text-info-content",
           "bg-success",
           "text-white",
         );
-        // badge.classList.remove();
+
         badge.classList.add("bg-error", "text-white");
 
         badge.innerText = "Rejected";
@@ -126,6 +125,7 @@ mainContainer.addEventListener("click", function (event) {
       }
     }
     const newStatus = statusChange();
+
     const jobInfo = {
       companyName,
       jobTitle,
@@ -155,6 +155,36 @@ mainContainer.addEventListener("click", function (event) {
   }
 });
 
+
+mainContainer.addEventListener("click", function (event) {
+  if (event.target.classList.contains("fa-trash-can")) {
+    const card = event.target.closest('.card');
+    if (!card) {
+      return;
+    }
+    const companyName = card.querySelector('.company-name').innerText;
+
+    const allCards = document.querySelectorAll('#all-jobs-cards .card');
+    allCards.forEach(c => {
+      if (c.querySelector('.company-name').innerText === companyName) c.remove();
+    });
+
+    const interviewCards = document.querySelectorAll('#interview-jobs-cards .card');
+    interviewCards.forEach(c => {
+      if (c.querySelector('.company-name').innerText === companyName) c.remove();
+    });
+
+    const rejectedCards = document.querySelectorAll('#rejected-jobs-cards .card');
+    rejectedCards.forEach(c => {
+      if (c.querySelector('.company-name').innerText === companyName) c.remove();
+    });
+
+    interviewList = interviewList.filter(job => job.companyName !== companyName);
+    rejectList = rejectList.filter(job => job.companyName !== companyName);
+    calculateCount();
+  }
+});
+
 function addInterviewJob() {
   filterDiv.innerHTML = "";
 
@@ -177,9 +207,7 @@ function addInterviewJob() {
                 <h2 class="company-name text-info-content text-xl">
                   ${interview.companyName}
                 </h2>
-                <i
-                  class="fa-regular fa-trash-can text-gray-400 cursor-pointer"
-                ></i>
+
               </div>
               <h4 class="job-position text-[#64748b] mb-4">
                 ${interview.jobTitle}
@@ -211,7 +239,6 @@ function addInterviewJob() {
             </div> 
         `;
 
-    // console.log(div.innerHTML);
     filterDiv.appendChild(div);
   }
 }
@@ -235,9 +262,6 @@ function addRejectedJob() {
                 <h2 class="company-name text-info-content text-xl">
                   ${reject.companyName}
                 </h2>
-                <i
-                  class="fa-regular fa-trash-can text-gray-400 cursor-pointer"
-                ></i>
               </div>
               <h4 class="job-position text-[#64748b] mb-4">
                 ${reject.jobTitle}
